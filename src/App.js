@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import Posts from './components/Posts/Posts.js'
+import Paginations from './components/Pagination/Pagination.js'
+import axios from 'axios'
 import './App.css';
 
-function App() {
+const App = () =>  {
+  
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(10)
+  const [totalPage, setTotalPage] = useState(1)
+  const [perPageNumber, setPerPageNumber] = useState(3)
+
+  useEffect(() => {
+    const requestPosts = async () => {
+      setLoading(true);
+      const res = await axios.get('http://localhost:3001/posts', { params: { currentPage, perPageNumber } } )
+      setPosts(res.data.content)
+      setTotalPage(res.data.totalPage)
+      setLoading(false);
+    }
+    // 调用请求
+    requestPosts()
+  }, [currentPage, perPageNumber])
+
+  // console.log(posts)
+  
+  const requestPostsByPage = (v) => {
+    if(v !== '…'){
+      // 边界处理
+      if( v === 0 || v > totalPage) return;
+      setCurrentPage(v)
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1 className="my-posts-title">我的文章</h1>
+      <Posts posts={posts} loading={loading} />
+      <Paginations totalPage={totalPage} currentPage={currentPage} requestPostsByPage={requestPostsByPage}/>
     </div>
   );
 }
