@@ -20,9 +20,9 @@ const Pagination = ({ totalPage, currentPage, requestPostsByPage }) => {
         if( currentPage < 5 ){
             liArr = [...allPageArr.slice(0,5),'…', totalPage]
         }else{
-             // 当总页数大于10 当前页小于 totalPage-5 时
-            if(currentPage <= totalPage-5){
-                liArr = [1, '…', ...allPageArr.slice(currentPage-1,currentPage+2),'…', totalPage]
+             // 当总页数大于10 当前页小于 totalPage-4 时
+            if(currentPage <= totalPage-4){
+                liArr = [1, '…', ...allPageArr.slice(currentPage-2,currentPage+1),'…', totalPage]
             }else{ // 当总页数大于10 当前页大于 totalPage-5 时
                 liArr = [1, '…', ...allPageArr.slice(totalPage-5, totalPage)]
             }

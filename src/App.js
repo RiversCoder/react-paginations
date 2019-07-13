@@ -8,7 +8,7 @@ const App = () =>  {
   
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(false)
-  const [currentPage, setCurrentPage] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1)
   const [totalPage, setTotalPage] = useState(1)
   const [perPageNumber, setPerPageNumber] = useState(3)
 
@@ -16,6 +16,7 @@ const App = () =>  {
     const requestPosts = async () => {
       setLoading(true);
       const res = await axios.get('http://localhost:3001/posts', { params: { currentPage, perPageNumber } } )
+      console.log(res)
       setPosts(res.data.content)
       setTotalPage(res.data.totalPage)
       setLoading(false);
@@ -23,8 +24,6 @@ const App = () =>  {
     // 调用请求
     requestPosts()
   }, [currentPage, perPageNumber])
-
-  // console.log(posts)
   
   const requestPostsByPage = (v) => {
     if(v !== '…'){
